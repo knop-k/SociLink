@@ -27,14 +27,13 @@ def my_profile_view(request):
 
 def invites_received_view(request):
     profile = Profile.objects.get(user=request.user)
-    qs = Relationship.objects.invations_received(profile)
+    qs = Relationship.objects.invitations_received(profile)
 
     context = {
         'qs': qs
     }
 
     return render(request, 'profiles/my_invites.html', context)
-
 
 def invite_profiles_list_view(request):
     user = request.user
