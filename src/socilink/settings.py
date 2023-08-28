@@ -42,9 +42,33 @@ INSTALLED_APPS = [
 
     'apps.posts',
     'apps.profiles',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
 
-LOGIN_URL = '/admin'
+# LOGIN_URL = '/admin'
+LOGIN_REDIRECT_URL = '/posts'
+SIGNUP_REDIRECT_URL = '/posts'
+LOGOUT_REDIRECT_URL = '/posts'
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_UNIQUE = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+RECIPIENT_ADDRESS = config('RECIPIENT_ADDRESS')
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -74,6 +98,11 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 WSGI_APPLICATION = "socilink.wsgi.application"
